@@ -8,24 +8,18 @@ import datalayer as dl
 df = dl.get_confirmed_admitted_deceased_per_day_per_sex()
 
 # Title
-st.title('Covid-19 Dashboard')
+st.title('Covid-19 Dashboard for Denmark')
 
 # Sidebar
-st.sidebar.header('User Input')
-selected_option = st.sidebar.selectbox('Select an option', ['Option 1', 'Option 2'])
+st.sidebar.header('Region')
+selected_option = st.sidebar.selectbox('Select an option', df['Region'].unique())
 
 # Main Content
 st.write('You selected:', selected_option)
 
-st.write(df)
+query_text = f"Region == '{selected_option}'"
 
-# Slider
-number = st.slider('Pick a number', 1, 10)
-st.write('Selected number:', number)
+st.write(df.query(query_text))
 
-# Chart
-chart_data = pd.DataFrame(
-    np.random.randn(20, 3),
-    columns=['a', 'b', 'c']
-)
-st.line_chart(chart_data)
+st.line_chart(df[df["Region"] == selected_option], y=["Indlæggelser", "Døde"], x="Prøvetagningsdato")
+st.line_chart(df[df["Region"] == selected_option], y=["Bekræftede tilfælde i alt"], x="Prøvetagningsdato")
