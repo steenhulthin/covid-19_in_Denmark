@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 
 import datalayer as dl
 
-df = pd.read_csv(r'./data/03_bekraeftede_tilfaelde_doede_indlagte_pr_dag_pr_koen.csv')
+df = dl.get_confirmed_admitted_deceased_per_day_per_sex()
 
 # Title
 st.title('Covid-19 Dashboard')
