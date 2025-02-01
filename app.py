@@ -3,8 +3,12 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 
+import datalayer as dl
+
+df = pd.read_csv(r'data\03_bekraeftede_tilfaelde_doede_indlagte_pr_dag_pr_koen.csv')
+
 # Title
-st.title('My Streamlit Dashboard')
+st.title('Covid-19 Dashboard')
 
 # Sidebar
 st.sidebar.header('User Input')
@@ -13,7 +17,8 @@ selected_option = st.sidebar.selectbox('Select an option', ['Option 1', 'Option 
 # Main Content
 st.write('You selected:', selected_option)
 
-         
+st.write(df)
+
 # Slider
 number = st.slider('Pick a number', 1, 10)
 st.write('Selected number:', number)
