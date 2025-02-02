@@ -23,3 +23,9 @@ st.write(df.query(query_text))
 
 st.line_chart(df[df["Region"] == selected_option], y=["Indlæggelser", "Døde"], x="Prøvetagningsdato")
 st.line_chart(df[df["Region"] == selected_option], y=["Bekræftede tilfælde i alt"], x="Prøvetagningsdato")
+
+map_data = pd.DataFrame(
+    np.random.randn(1000, 2) / [50, 50] + [55.70, 12.55],
+    columns=['lat', 'lon'])
+
+st.map(map_data)
