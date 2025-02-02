@@ -30,3 +30,6 @@ map_data = pd.DataFrame(
     columns=['lat', 'lon'])
 
 st.map(map_data)
+
+pyg_app = StreamlitRenderer(df)
+pyg_app.explorer()
