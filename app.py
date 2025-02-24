@@ -1,11 +1,11 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
-#from pygwalker.api.streamlit import StreamlitRenderer
 
 import datalayer as dl
 
 df = dl.get_confirmed_admitted_deceased_per_day_per_sex()
+plejehjem = dl.get_plejehjemsdata()
 
 # Title
 st.title('Covid-19 Dashboard for Denmark')
@@ -24,14 +24,8 @@ st.write(df.query(query_text))
 st.line_chart(df[df["Region"] == selected_option], y=["Indlæggelser", "Døde"], x="Prøvetagningsdato")
 st.line_chart(df[df["Region"] == selected_option], y=["Bekræftede tilfælde i alt"], x="Prøvetagningsdato")
 
+st.write('---')
 
-map_data = pd.DataFrame(
-    np.random.randn(1000, 2) / [50, 50] + [55.70, 12.55],
-    columns=['lat', 'lon'])
+plejehjem['year_week'] = plejehjem['År'].astype(str) + '-w' + plejehjem['Uge'].astype(str)
 
-st.map(map_data)
-
-st.write(dl.get_some_rando_stuff())
-
-#pyg_app = StreamlitRenderer(df)
-#pyg_app.explorer()
+st.line_chart(plejehjem[plejehjem["År"] != "I alt"], y=["Antal tests blandt beboere", "Bekræftede tilfælde beboere", "Dødsfald blandt bekræftede beboere"], x="year_week")
