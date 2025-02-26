@@ -2,7 +2,9 @@
 
 - [ ] Add static in-repo fallback for datafiles
     - [ ] add a warning if the static file is loaded in stead of the latest data
-- [ ] set up config
+- [ ] Add readme.md
+- [ ] Add changelog
+- [x] set up config
 - [ ] set up top-bar
 - [ ] make side-bar nicer
 - [ ] set it up in Stlite
