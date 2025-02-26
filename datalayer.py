@@ -11,7 +11,7 @@ def get_confirmed_admitted_deceased_per_day_per_sex():
         return pd.read_csv(data, delimiter=';')
     else:
         print("Failed to download CSV file. Status code:", response.status_code)
-    return pd.DataFrame()
+        return pd.read_csv(r'./data/03_bekraeftede_tilfaelde_doede_indlagte_pr_dag_pr_koen.csv', delimiter=';')
     
 def get_plejehjemsdata():
     return pd.read_csv("https://steenhulthin.github.io/infectious-diseases-data/28_plejehjem_ugeoversigt.csv", delimiter=';')
