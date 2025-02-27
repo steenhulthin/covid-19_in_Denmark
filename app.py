@@ -23,14 +23,15 @@ selected_option = st.sidebar.selectbox('Select an option', df['Region'].unique()
 
 
 query_text = f"Region == '{selected_option}'"
-nursinghome_df['year_week'] = nursinghome_df['År'].astype(str) + '-w' + nursinghome_df['Uge'].astype(str)
+year_week_column_name = 'year_week'
+nursinghome_df[year_week_column_name] = nursinghome_df['År'].astype(str) + '-w' + nursinghome_df['Uge'].astype(str)
 nursinghome_df = nursinghome_df[nursinghome_df["År"] != "I alt"] # ugly hack to remove the total row for the rest of the  script
 
 fig = go.Figure()
 
-fig.add_trace(go.Scatter(x=nursinghome_df['year_week'], y=nursinghome_df[dl.get_testede_column_name()], mode='lines', name="🧪 " + dl.get_testede_column_name(), line=dict(color=dl.color_tested)))
-fig.add_trace(go.Scatter(x=nursinghome_df['year_week'], y=nursinghome_df[dl.get_positive_column_name()], mode='lines', name= "🦠 " + dl.get_positive_column_name(), yaxis='y2', line=dict(color=dl.color_positive)))
-fig.add_trace(go.Scatter(x=nursinghome_df['year_week'], y=nursinghome_df[dl.get_dead_column_name()], mode='lines', name="💀 " + dl.get_dead_column_name(), yaxis='y2', line=dict(color=dl.color_dead)))
+fig.add_trace(go.Scatter(x=nursinghome_df[year_week_column_name], y=nursinghome_df[dl.get_testede_column_name()], mode='lines', name="🧪 " + dl.get_testede_column_name(), line=dict(color=dl.color_tested)))
+fig.add_trace(go.Scatter(x=nursinghome_df[year_week_column_name], y=nursinghome_df[dl.get_positive_column_name()], mode='lines', name= "🦠 " + dl.get_positive_column_name(), yaxis='y2', line=dict(color=dl.color_positive)))
+fig.add_trace(go.Scatter(x=nursinghome_df[year_week_column_name], y=nursinghome_df[dl.get_dead_column_name()], mode='lines', name="💀 " + dl.get_dead_column_name(), yaxis='y2', line=dict(color=dl.color_dead)))
 
 fig.update_layout( 
     yaxis=dict(
@@ -39,6 +40,7 @@ fig.update_layout(
     ),
     yaxis2=dict(
         title='Antal positive/døde 🦠/💀',
+        tickfont=dict(color=dl.color_dead),
         overlaying='y',
         side='right'
     ),
@@ -47,15 +49,24 @@ fig.update_layout(
 
 st.plotly_chart(fig)
 
-# todo: handle division by zero
-nursinghome_df['dead_positive_rate'] = nursinghome_df[dl.get_dead_column_name()] / nursinghome_df[dl.get_positive_column_name()]
 
-st.line_chart(nursinghome_df[nursinghome_df["År"] != "I alt"], y=[ 'dead_positive_rate' ], x='year_week')
+dead_pos_rate_column_name = 'dead_positive_rate'
+pos_tested_rate_column_name = 'positive_tested_rate'
+
+nursinghome_df[dead_pos_rate_column_name] = nursinghome_df[dl.get_dead_column_name()] / (nursinghome_df[dl.get_positive_column_name()] + 1) # the + 1 is to avoid division by zero
+nursinghome_df[pos_tested_rate_column_name] = nursinghome_df[dl.get_positive_column_name()] / (nursinghome_df[dl.get_testede_column_name()] + 1) # the + 1 is to avoid division by zero
+
+st.line_chart(nursinghome_df[nursinghome_df["År"] != "I alt"], y=[ dead_pos_rate_column_name, pos_tested_rate_column_name ], x=year_week_column_name)
+
+st.write("Older people")
+
+
+
 
 st.write('You selected:', selected_option)
 
 
-st.line_chart(nursinghome_df[nursinghome_df["År"] != "I alt"], y=[dl.get_testede_column_name, dl.get_positive_column_name(), dl.get_dead_column_name()], x='year_week')
+st.line_chart(nursinghome_df[nursinghome_df["År"] != "I alt"], y=[dl.get_testede_column_name(), dl.get_positive_column_name(), dl.get_dead_column_name()], x=year_week_column_name)
 
 st.write(df.query(query_text))
 

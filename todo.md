@@ -20,3 +20,6 @@
     - [ ] add interpretation to graphs
     - [ ] colors, emojis, styling
     - [ ] add infotainment? (links to videos, news articles, press releases)
+
+Bugs:
+- [ ] Fix x-axis on plots "bla.0" wtf?!!
