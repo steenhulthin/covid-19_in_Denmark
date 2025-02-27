@@ -15,3 +15,22 @@ def get_confirmed_admitted_deceased_per_day_per_sex():
     
 def get_plejehjemsdata():
     return pd.read_csv("https://steenhulthin.github.io/infectious-diseases-data/28_plejehjem_ugeoversigt.csv", delimiter=';')
+
+def get_testede_column_name():
+    return "Antal tests blandt beboere"
+
+def get_positive_column_name():
+    return "Bekræftede tilfælde beboere"
+
+def get_dead_column_name():
+    return "Dødsfald blandt bekræftede beboere"
+
+color_tested = "cornflowerblue"
+color_positive = "darkorange"
+color_admitted = "crimson"
+color_dead = "black"
+
+emoji_tested = "🧪"
+emoji_positive = "🦠"
+emoji_admitted = "🛌"
+emoji_dead = "💀"

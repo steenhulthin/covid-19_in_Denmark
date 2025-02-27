@@ -10,14 +10,7 @@ st.set_page_config(page_title="Covid-19 Among Older People and Nursing Home Resi
 df = dl.get_confirmed_admitted_deceased_per_day_per_sex()
 nursinghome_df = dl.get_plejehjemsdata()
 
-def get_testede_column_name():
-    return "Antal tests blandt beboere"
 
-def get_positive_column_name():
-    return "Bekræftede tilfælde beboere"
-
-def get_dead_column_name():
-    return "Dødsfald blandt bekræftede beboere"
 
 # Title
 st.title('Covid-19 in Denmark')
@@ -35,14 +28,17 @@ nursinghome_df = nursinghome_df[nursinghome_df["År"] != "I alt"] # ugly hack to
 
 fig = go.Figure()
 
-fig.add_trace(go.Scatter(x=nursinghome_df['year_week'], y=nursinghome_df[get_testede_column_name()], mode='lines', name="🧪 " + get_testede_column_name()))
-fig.add_trace(go.Scatter(x=nursinghome_df['year_week'], y=nursinghome_df[get_positive_column_name()], mode='lines', name= "🦠 " + get_positive_column_name(), yaxis='y2'))
-fig.add_trace(go.Scatter(x=nursinghome_df['year_week'], y=nursinghome_df[get_dead_column_name()], mode='lines', name="💀 " + get_dead_column_name(), yaxis='y2'))
+fig.add_trace(go.Scatter(x=nursinghome_df['year_week'], y=nursinghome_df[dl.get_testede_column_name()], mode='lines', name="🧪 " + dl.get_testede_column_name(), line=dict(color=dl.color_tested)))
+fig.add_trace(go.Scatter(x=nursinghome_df['year_week'], y=nursinghome_df[dl.get_positive_column_name()], mode='lines', name= "🦠 " + dl.get_positive_column_name(), yaxis='y2', line=dict(color=dl.color_positive)))
+fig.add_trace(go.Scatter(x=nursinghome_df['year_week'], y=nursinghome_df[dl.get_dead_column_name()], mode='lines', name="💀 " + dl.get_dead_column_name(), yaxis='y2', line=dict(color=dl.color_dead)))
 
 fig.update_layout( 
-    yaxis=dict(title='Antal tests'),
+    yaxis=dict(
+        title='Antal tests 🧪', 
+        tickfont=dict(color=dl.color_tested)
+    ),
     yaxis2=dict(
-        title='Antal positive/døde',
+        title='Antal positive/døde 🦠/💀',
         overlaying='y',
         side='right'
     ),
@@ -52,14 +48,14 @@ fig.update_layout(
 st.plotly_chart(fig)
 
 # todo: handle division by zero
-nursinghome_df['dead_positive_rate'] = nursinghome_df[get_dead_column_name()] / nursinghome_df[get_positive_column_name()]
+nursinghome_df['dead_positive_rate'] = nursinghome_df[dl.get_dead_column_name()] / nursinghome_df[dl.get_positive_column_name()]
 
-st.line_chart(nursinghome_df[nursinghome_df["År"] != "I alt"], y=[ 'dead_positive_rate' ], x="year_week")
+st.line_chart(nursinghome_df[nursinghome_df["År"] != "I alt"], y=[ 'dead_positive_rate' ], x='year_week')
 
 st.write('You selected:', selected_option)
 
 
-st.line_chart(nursinghome_df[nursinghome_df["År"] != "I alt"], y=[get_testede_column_name(), get_positive_column_name(), get_dead_column_name()], x="year_week")
+st.line_chart(nursinghome_df[nursinghome_df["År"] != "I alt"], y=[dl.get_testede_column_name, dl.get_positive_column_name(), dl.get_dead_column_name()], x='year_week')
 
 st.write(df.query(query_text))
 

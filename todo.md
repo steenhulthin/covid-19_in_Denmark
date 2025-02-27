@@ -2,6 +2,7 @@
 
 - [ ] Add static in-repo fallback for datafiles
     - [ ] add a warning if the static file is loaded in stead of the latest data
+    - [ ] and test that it actually works...
 - [ ] Add readme.md
 - [ ] Add changelog
 - [x] set up config
