@@ -2,8 +2,10 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 import plotly.graph_objects as go
+from webcolors import name_to_rgb
 
 import datalayer as dl
+
 
 st.set_page_config(page_title="Covid-19 Among Older People and Nursing Home Residents in Denmark", page_icon=":older_woman:", layout="wide", initial_sidebar_state="auto", menu_items={"Get Help": None, "Report a bug": "https://github.com/steenhulthin/covid-19_in_Denmark/issues", "About": "Written by Steen Hulthin Rasmussen. Data source: Statens Serum Institut"})
 
@@ -60,20 +62,5 @@ st.line_chart(nursinghome_df[nursinghome_df["År"] != "I alt"], y=[ dead_pos_rat
 
 st.write("Older people")
 
-
-
-
-
-
-
-st.line_chart(nursinghome_df[nursinghome_df["År"] != "I alt"], y=[dl.get_testede_column_name(), dl.get_positive_column_name(), dl.get_dead_column_name()], x=year_week_column_name)
-
-st.write(df.query(query_text))
-
-st.write('You selected:', selected_option)
-st.line_chart(df[df["Region"] == selected_option], y=["Indlæggelser", "Døde"], x="Prøvetagningsdato")
-st.line_chart(df[df["Region"] == selected_option], y=["Bekræftede tilfælde i alt"], x="Prøvetagningsdato")
-
-
 df_groups = dl.get_age_group_data()
-st.bar_chart(df_groups[df_groups["Region_x"] == selected_option], y=["Bekræftede tilfælde i alt"], x="Aldersgruppe")
+st.bar_chart(df_groups[df_groups["Region_x"] == selected_option], y=["Bekræftede tilfælde i alt", "Indlæggelser", "Døde"], x="Aldersgruppe", color=[name_to_rgb(dl.color_positive), name_to_rgb(dl.color_admitted), name_to_rgb(dl.color_dead)])
