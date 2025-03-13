@@ -14,13 +14,13 @@ def get_csv_data(url, backup_file_path=None):
     if response.status_code == 200:
         data = StringIO(response.text)
         return pd.read_csv(data, delimiter=';')
-    else:
-        print("Failed to download CSV file. Status code:", response.status_code)
-        if backup_file_path is None:
-            print("No backup file path provided.")
-            return pd.DataFrame()
-        else:
-            return pd.read_csv(backup_file_path, delimiter=';')
+    
+    print("Failed to download CSV file. Status code:", response.status_code)
+    if backup_file_path is None:
+        print("No backup file path provided.")
+        return pd.DataFrame()
+    
+    return pd.read_csv(backup_file_path, delimiter=';')
 
 def get_confirmed_admitted_deceased_per_day_per_sex():
     """Returns a DataFrame containing the number of confirmed cases, admitted patients and deceased patients per day"""
