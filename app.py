@@ -63,12 +63,17 @@ st.write("Older people")
 
 
 
-st.write('You selected:', selected_option)
+
 
 
 st.line_chart(nursinghome_df[nursinghome_df["År"] != "I alt"], y=[dl.get_testede_column_name(), dl.get_positive_column_name(), dl.get_dead_column_name()], x=year_week_column_name)
 
 st.write(df.query(query_text))
 
+st.write('You selected:', selected_option)
 st.line_chart(df[df["Region"] == selected_option], y=["Indlæggelser", "Døde"], x="Prøvetagningsdato")
 st.line_chart(df[df["Region"] == selected_option], y=["Bekræftede tilfælde i alt"], x="Prøvetagningsdato")
+
+
+df_groups = dl.get_age_group_data()
+st.line_chart(df_groups[df_groups["Region_x"] == selected_option], y=["Bekræftede tilfælde i alt"], x="Aldersgruppe")

@@ -24,6 +24,15 @@ def get_plejehjemsdata():
     df.__dict__["tested"] = "Antal tests blandt beboere"
     return df
 
+def _get_admitted_age_groups():
+    return get_csv_data("https://steenhulthin.github.io/infectious-diseases-data/04_indlagte_pr_alders_grp_pr_region.csv")
+
+def _get_tested_dead_age_groups():
+    return get_csv_data("https://steenhulthin.github.io/infectious-diseases-data/05_bekraeftede_tilfaelde_doede_pr_region_pr_alders_grp.csv")
+
+def get_age_group_data():
+    return pd.merge(_get_admitted_age_groups(), _get_tested_dead_age_groups(), left_on=['Regionskode', 'Alders gruppe'], right_on=['Regionskode', 'Aldersgruppe'], how='inner')
+
 def get_testede_column_name():
     return "Antal tests blandt beboere"
 
