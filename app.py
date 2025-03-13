@@ -45,25 +45,25 @@ fig.add_trace(go.Scatter(x=nursinghome_df[YEAR_WEEK_COLUMN_NAME],
                          y=nursinghome_df[dl.get_testede_column_name()],
                          mode='lines',
                          name="🧪 " + dl.get_testede_column_name(),
-                         line={'color': dl.color_tested}))
+                         line={'color': dl.COLOR_TESTED}))
 fig.add_trace(go.Scatter(x=nursinghome_df[YEAR_WEEK_COLUMN_NAME],
                          y=nursinghome_df[dl.get_positive_column_name()],
                          mode='lines',
                          name= "🦠 " + dl.get_positive_column_name(),
                          yaxis='y2',
-                         line={'color': dl.color_positive}))
+                         line={'color': dl.COLOR_POSITIVE}))
 fig.add_trace(go.Scatter(x=nursinghome_df[YEAR_WEEK_COLUMN_NAME],
                          y=nursinghome_df[dl.get_dead_column_name()],
                          mode='lines',
                          name="💀 " + dl.get_dead_column_name(),
                          yaxis='y2',
-                         line={'color': dl.color_dead}))
+                         line={'color': dl.COLOR_DEAD}))
 
 fig.update_layout(
-    yaxis={'title': 'Antal tests 🧪', 
-           'tickfont': {'color': dl.color_tested}},
-    yaxis2={'title': 'Antal positive/døde 🦠/💀', 
-            'tickfont': {'color': dl.color_dead},
+    yaxis={'title': 'Antal tests 🧪',
+           'tickfont': {'color': dl.COLOR_TESTED}},
+    yaxis2={'title': 'Antal positive/døde 🦠/💀',
+            'tickfont': {'color': dl.COLOR_DEAD},
             'overlaying': 'y',
             'side': 'right'
     },
@@ -73,14 +73,14 @@ fig.update_layout(
 st.plotly_chart(fig)
 
 
-dead_pos_rate_column_name = 'dead_positive_rate'
-pos_tested_rate_column_name = 'positive_tested_rate'
+DEAD_POS_RATE_COLUMN_NAME = 'dead_positive_rate'
+POS_TESTED_RATE_COLUMN_NAME = 'positive_tested_rate'
 
-nursinghome_df[dead_pos_rate_column_name] = nursinghome_df[dl.get_dead_column_name()] / (nursinghome_df[dl.get_positive_column_name()] + 1) # the + 1 is to avoid division by zero
-nursinghome_df[pos_tested_rate_column_name] = nursinghome_df[dl.get_positive_column_name()] / (nursinghome_df[dl.get_testede_column_name()] + 1) # the + 1 is to avoid division by zero
+nursinghome_df[DEAD_POS_RATE_COLUMN_NAME] = nursinghome_df[dl.get_dead_column_name()] / (nursinghome_df[dl.get_positive_column_name()] + 1) # the + 1 is to avoid division by zero
+nursinghome_df[POS_TESTED_RATE_COLUMN_NAME] = nursinghome_df[dl.get_positive_column_name()] / (nursinghome_df[dl.get_testede_column_name()] + 1) # the + 1 is to avoid division by zero
 
 st.line_chart(nursinghome_df[nursinghome_df["År"] != "I alt"],
-              y=[ dead_pos_rate_column_name, pos_tested_rate_column_name ],
+              y=[ DEAD_POS_RATE_COLUMN_NAME, POS_TESTED_RATE_COLUMN_NAME ],
               x=YEAR_WEEK_COLUMN_NAME)
 
 st.write("Age groups")
@@ -89,4 +89,4 @@ df_groups = dl.get_age_group_data()
 st.bar_chart(df_groups[df_groups["Region_x"] == selected_option],
              y=["Bekræftede tilfælde i alt", "Indlæggelser", "Døde"],
              x="Aldersgruppe",
-             color=[name_to_rgb(dl.color_positive), name_to_rgb(dl.color_admitted), name_to_rgb(dl.color_dead)])
+             color=[name_to_rgb(dl.COLOR_POSITIVE), name_to_rgb(dl.COLOR_ADMITTED), name_to_rgb(dl.COLOR_DEAD)])

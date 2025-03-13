@@ -1,9 +1,13 @@
+""""
+This module contains functionality for downloading and processing covid-19 data originating from SSI (Statens Serum Institut).
+"""
+
 from io import StringIO
 import pandas as pd
 import requests
 
 def get_csv_data(url, backup_file_path=None):
-    response = requests.get(url)
+    response = requests.get(url, timeout=(1, 2))
 
     if response.status_code == 200:
         data = StringIO(response.text)
@@ -17,7 +21,7 @@ def get_csv_data(url, backup_file_path=None):
             return pd.read_csv(backup_file_path, delimiter=';')
 
 def get_confirmed_admitted_deceased_per_day_per_sex():
-    return get_csv_data("https://steenhulthin.github.io/infectious-diseases-data/03_bekraeftede_tilfaelde_doede_indlagte_pr_dag_pr_koen.csv", 
+    return get_csv_data("https://steenhulthin.github.io/infectious-diseases-data/03_bekraeftede_tilfaelde_doede_indlagte_pr_dag_pr_koen.csv",
                         r'./data/03_bekraeftede_tilfaelde_doede_indlagte_pr_dag_pr_koen.csv')
     
 def get_plejehjemsdata():
@@ -32,10 +36,10 @@ def _get_tested_dead_age_groups():
     return get_csv_data("https://steenhulthin.github.io/infectious-diseases-data/05_bekraeftede_tilfaelde_doede_pr_region_pr_alders_grp.csv")
 
 def get_age_group_data():
-    return pd.merge(_get_admitted_age_groups(), 
-                    _get_tested_dead_age_groups(), 
-                    left_on=['Regionskode', 'Alders gruppe'], 
-                    right_on=['Regionskode', 'Aldersgruppe'], 
+    return pd.merge(_get_admitted_age_groups(),
+                    _get_tested_dead_age_groups(),
+                    left_on=['Regionskode', 'Alders gruppe'],
+                    right_on=['Regionskode', 'Aldersgruppe'],
                     how='inner')
 
 def get_testede_column_name():
@@ -47,12 +51,12 @@ def get_positive_column_name():
 def get_dead_column_name():
     return "Dødsfald blandt bekræftede beboere"
 
-color_tested = "limegreen"
-color_positive = "teal"
-color_admitted = "orangered"
-color_dead = "crimson"
+COLOR_TESTED = "limegreen"
+COLOR_POSITIVE = "teal"
+COLOR_ADMITTED = "orangered"
+COLOR_DEAD = "crimson"
 
-emoji_tested = "🧪"
-emoji_positive = "🦠"
-emoji_admitted = "🛌"
-emoji_dead = "💀"
+EMOJI_TESTED = "🧪"
+EMOJI_POSITIVE = "🦠"
+EMOJI_ADMITTED = "🛌"
+EMOJI_DEAD = "💀"
