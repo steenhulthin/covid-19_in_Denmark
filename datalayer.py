@@ -17,7 +17,8 @@ def get_csv_data(url, backup_file_path=None):
             return pd.read_csv(backup_file_path, delimiter=';')
 
 def get_confirmed_admitted_deceased_per_day_per_sex():
-    return get_csv_data("https://steenhulthin.github.io/infectious-diseases-data/03_bekraeftede_tilfaelde_doede_indlagte_pr_dag_pr_koen.csv", r'./data/03_bekraeftede_tilfaelde_doede_indlagte_pr_dag_pr_koen.csv')
+    return get_csv_data("https://steenhulthin.github.io/infectious-diseases-data/03_bekraeftede_tilfaelde_doede_indlagte_pr_dag_pr_koen.csv", 
+                        r'./data/03_bekraeftede_tilfaelde_doede_indlagte_pr_dag_pr_koen.csv')
     
 def get_plejehjemsdata():
     df = get_csv_data("https://steenhulthin.github.io/infectious-diseases-data/28_plejehjem_ugeoversigt.csv")
@@ -31,7 +32,11 @@ def _get_tested_dead_age_groups():
     return get_csv_data("https://steenhulthin.github.io/infectious-diseases-data/05_bekraeftede_tilfaelde_doede_pr_region_pr_alders_grp.csv")
 
 def get_age_group_data():
-    return pd.merge(_get_admitted_age_groups(), _get_tested_dead_age_groups(), left_on=['Regionskode', 'Alders gruppe'], right_on=['Regionskode', 'Aldersgruppe'], how='inner')
+    return pd.merge(_get_admitted_age_groups(), 
+                    _get_tested_dead_age_groups(), 
+                    left_on=['Regionskode', 'Alders gruppe'], 
+                    right_on=['Regionskode', 'Aldersgruppe'], 
+                    how='inner')
 
 def get_testede_column_name():
     return "Antal tests blandt beboere"
