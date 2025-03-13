@@ -76,4 +76,4 @@ st.line_chart(df[df["Region"] == selected_option], y=["Bekræftede tilfælde i a
 
 
 df_groups = dl.get_age_group_data()
-st.line_chart(df_groups[df_groups["Region_x"] == selected_option], y=["Bekræftede tilfælde i alt"], x="Aldersgruppe")
+st.bar_chart(df_groups[df_groups["Region_x"] == selected_option], y=["Bekræftede tilfælde i alt"], x="Aldersgruppe")
