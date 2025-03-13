@@ -5,12 +5,12 @@ from webcolors import name_to_rgb
 import datalayer as dl
 
 st.set_page_config(
-    page_title="Covid-19 Among Older People and Nursing Home Residents in Denmark", 
-    page_icon=":older_woman:", 
-    layout="wide", 
-    initial_sidebar_state="auto", 
-    menu_items={"Get Help": None, 
-                "Report a bug": "https://github.com/steenhulthin/covid-19_in_Denmark/issues", 
+    page_title="Covid-19 Among Older People and Nursing Home Residents in Denmark",
+    page_icon=":older_woman:",
+    layout="wide",
+    initial_sidebar_state="auto",
+    menu_items={"Get Help": None,
+                "Report a bug": "https://github.com/steenhulthin/covid-19_in_Denmark/issues",
                 "About": "Written by Steen Hulthin Rasmussen. Data source: Statens Serum Institut"})
 
 df = dl.get_confirmed_admitted_deceased_per_day_per_sex()
@@ -31,31 +31,31 @@ selected_option = st.sidebar.selectbox('Select an option', df['Region'].unique()
 query_text = f"Region == '{selected_option}'"
 year_week_column_name = 'year_week'
 nursinghome_df[year_week_column_name] = nursinghome_df['År'].astype(str) + '-w' + nursinghome_df['Uge'].astype(str)
-nursinghome_df = nursinghome_df[nursinghome_df["År"] != "I alt"] # ugly hack to remove the total row for the rest of the  script
+nursinghome_df = nursinghome_df[nursinghome_df["År"] != "I alt"] # ugly hack to remove the total row for the rest of the script
 
 fig = go.Figure()
 
-fig.add_trace(go.Scatter(x=nursinghome_df[year_week_column_name], 
-                         y=nursinghome_df[dl.get_testede_column_name()], 
-                         mode='lines', 
-                         name="🧪 " + dl.get_testede_column_name(), 
+fig.add_trace(go.Scatter(x=nursinghome_df[year_week_column_name],
+                         y=nursinghome_df[dl.get_testede_column_name()],
+                         mode='lines',
+                         name="🧪 " + dl.get_testede_column_name(),
                          line=dict(color=dl.color_tested)))
-fig.add_trace(go.Scatter(x=nursinghome_df[year_week_column_name], 
-                         y=nursinghome_df[dl.get_positive_column_name()], 
-                         mode='lines', 
-                         name= "🦠 " + dl.get_positive_column_name(), 
-                         yaxis='y2', 
+fig.add_trace(go.Scatter(x=nursinghome_df[year_week_column_name],
+                         y=nursinghome_df[dl.get_positive_column_name()],
+                         mode='lines',
+                         name= "🦠 " + dl.get_positive_column_name(),
+                         yaxis='y2',
                          line=dict(color=dl.color_positive)))
-fig.add_trace(go.Scatter(x=nursinghome_df[year_week_column_name], 
-                         y=nursinghome_df[dl.get_dead_column_name()], 
-                         mode='lines', 
-                         name="💀 " + dl.get_dead_column_name(), 
-                         yaxis='y2', 
+fig.add_trace(go.Scatter(x=nursinghome_df[year_week_column_name],
+                         y=nursinghome_df[dl.get_dead_column_name()],
+                         mode='lines',
+                         name="💀 " + dl.get_dead_column_name(),
+                         yaxis='y2',
                          line=dict(color=dl.color_dead)))
 
 fig.update_layout( 
     yaxis=dict(
-        title='Antal tests 🧪', 
+        title='Antal tests 🧪',
         tickfont=dict(color=dl.color_tested)
     ),
     yaxis2=dict(

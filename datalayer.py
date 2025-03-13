@@ -1,6 +1,6 @@
+from io import StringIO
 import pandas as pd
 import requests
-from io import StringIO
 
 def get_csv_data(url, backup_file_path=None):
     response = requests.get(url)
